@@ -560,7 +560,7 @@
   let targetProgress = 0;
   let progress       = 0;
   window.addEventListener('wheel', function (e) {
-    const delta = e.deltaY * 0.0006;
+    const delta = e.deltaY * 0.00015;
     targetProgress = Math.min(1.0, Math.max(0.0, targetProgress + delta));
   }, { passive: true });
   function updateScrollFromWindow() {
@@ -573,7 +573,7 @@
   let touchStartY = 0;
   window.addEventListener('touchstart', e => { touchStartY = e.touches[0].clientY; }, { passive: true });
   window.addEventListener('touchmove', e => {
-    const deltaY = (touchStartY - e.touches[0].clientY) * 0.0016;
+    const deltaY = (touchStartY - e.touches[0].clientY) * 0.0005;
     touchStartY = e.touches[0].clientY;
     targetProgress = Math.min(1.0, Math.max(0.0, targetProgress + deltaY));
   }, { passive: true });
@@ -652,7 +652,7 @@
     requestAnimationFrame(animate);
     const delta = Math.min(clock.getDelta(), 0.05);
     time += delta * 1.1;
-    progress     = THREE.MathUtils.damp(progress, targetProgress, 4.5, delta);
+    progress     = THREE.MathUtils.damp(progress, targetProgress, 2.2, delta);
     dampedMouseX = THREE.MathUtils.damp(dampedMouseX, mouseX, 3.0, delta);
     dampedMouseY = THREE.MathUtils.damp(dampedMouseY, mouseY, 3.0, delta);
     updateTeamRevealTimeline(progress);
