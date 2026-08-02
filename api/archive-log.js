@@ -1,9 +1,7 @@
-const { FRAGMENTS } = require('./_secrets');
+const { FRAGMENTS, isRateLimited, applySecurityHeaders } = require('./_secrets');
 
 module.exports = (req, res) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('X-CTF', 'Black-Beacon');
-  res.setHeader('X-Content-Type-Options', 'nosniff');
+  applySecurityHeaders(res);
 
   if (req.method === 'OPTIONS') {
     return res.status(204).end();
@@ -13,9 +11,19 @@ module.exports = (req, res) => {
     return res.status(405).json({ error: 'Method Not Allowed. API routes require POST requests.' });
   }
 
+  if (isRateLimited(req)) {
+    return res.status(429).json({
+      success: false,
+      error: 'Too Many Requests. Rate limit exceeded. Try again in 60 seconds.'
+    });
+  }
+
   try {
     let data = req.body;
     if (typeof data === 'string') {
+      if (data.length > 4096) {
+        return res.status(413).json({ error: 'Payload Too Large' });
+      }
       try { data = JSON.parse(data); } catch (e) { data = {}; }
     } else if (!data) {
       data = {};
@@ -38,6 +46,6 @@ module.exports = (req, res) => {
       });
     }
   } catch (e) {
-    return res.status(400).json({ error: 'Invalid JSON' });
+    return res.status(400).json({ error: 'Invalid JSON request payload' });
   }
 };

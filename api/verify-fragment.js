@@ -1,9 +1,7 @@
-const { FRAGMENTS, PASSPHRASES } = require('./_secrets');
+const { FRAGMENTS, PASSPHRASES, isRateLimited, applySecurityHeaders } = require('./_secrets');
 
 module.exports = (req, res) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('X-CTF', 'Black-Beacon');
-  res.setHeader('X-Content-Type-Options', 'nosniff');
+  applySecurityHeaders(res);
 
   if (req.method === 'OPTIONS') {
     return res.status(204).end();
@@ -13,9 +11,19 @@ module.exports = (req, res) => {
     return res.status(405).json({ error: 'Method Not Allowed. API routes require POST requests.' });
   }
 
+  if (isRateLimited(req)) {
+    return res.status(429).json({
+      success: false,
+      error: 'Too Many Requests. Rate limit exceeded. Try again in 60 seconds.'
+    });
+  }
+
   try {
     let data = req.body;
     if (typeof data === 'string') {
+      if (data.length > 4096) {
+        return res.status(413).json({ error: 'Payload Too Large' });
+      }
       try { data = JSON.parse(data); } catch (e) { data = {}; }
     } else if (!data) {
       data = {};
@@ -23,6 +31,10 @@ module.exports = (req, res) => {
 
     const stage = parseInt(data.stage, 10);
     const value = (data.value || '').trim();
+
+    if (value.length > 256) {
+      return res.status(400).json({ success: false, error: 'Input value exceeds maximum length.' });
+    }
 
     if (stage === 1 && FRAGMENTS[1].includes(value)) {
       return res.status(200).json({
