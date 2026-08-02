@@ -79,138 +79,158 @@ const server = http.createServer((req, res) => {
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('X-Frame-Options', 'DENY');
 
-  /* ── POST /api/verify-fragment ───────────────────────────── */
-  if (req.method === 'POST' && parsedUrl.pathname === '/api/verify-fragment') {
-    if (isRateLimited(ip)) {
-      res.writeHead(429, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ error: 'Rate limit exceeded. Try again later.' }));
+  /* ── API Endpoint Routing & Handler Block ───────────────── */
+  if (parsedUrl.pathname.startsWith('/api/') || parsedUrl.pathname === '/api') {
+    if (req.method === 'OPTIONS') {
+      res.writeHead(204);
+      res.end();
       return;
     }
 
-    let body = '';
-    req.on('data', chunk => { body += chunk; });
-    req.on('end', () => {
-      try {
-        const data = JSON.parse(body);
-        const stage = parseInt(data.stage, 10);
-        const value = (data.value || '').trim();
-
-        if (stage === 1 && FRAGMENTS[1].includes(value)) {
-          res.writeHead(200, { 'Content-Type': 'application/json' });
-          res.end(JSON.stringify({
-            success: true,
-            message: 'First Map Fragment verified by Quartermaster.',
-            fragment: FRAGMENTS[1][0]
-          }));
-          return;
-        }
-
-        if (stage === 2 && FRAGMENTS[2].includes(value)) {
-          res.writeHead(200, { 'Content-Type': 'application/json' });
-          res.end(JSON.stringify({
-            success: true,
-            message: 'Second Map Fragment verified by Beacon Keeper.',
-            fragment: FRAGMENTS[2][0]
-          }));
-          return;
-        }
-
-        if (stage === 3 && (value.toUpperCase() === PASSPHRASES.strongbox || FRAGMENTS[3].includes(value))) {
-          res.writeHead(200, { 'Content-Type': 'application/json' });
-          res.end(JSON.stringify({
-            success: true,
-            message: 'Strongbox cipher unsealed.',
-            fragment: FRAGMENTS[3][0]
-          }));
-          return;
-        }
-
-        res.writeHead(401, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({
-          success: false,
-          message: 'Invalid fragment or passphrase offered to the sea.'
-        }));
-      } catch (e) {
-        res.writeHead(400, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ error: 'Invalid JSON request payload' }));
-      }
-    });
-    return;
-  }
-
-  /* ── POST /api/archive-log ──────────────────────────────── */
-  if (req.method === 'POST' && parsedUrl.pathname === '/api/archive-log') {
-    let body = '';
-    req.on('data', chunk => { body += chunk; });
-    req.on('end', () => {
-      try {
-        const data = JSON.parse(body);
-        const role = (data.role || '').toLowerCase();
-        if (role === 'quartermaster' || role === 'captain') {
-          res.writeHead(200, { 'Content-Type': 'application/json' });
-          res.end(JSON.stringify({
-            success: true,
-            logId: 'log-1708',
-            title: 'Quartermaster Log #1708',
-            fragment: FRAGMENTS[2][0],
-            notes: 'Sparrow 1708 navigation coordinates verified.'
-          }));
-        } else {
-          res.writeHead(403, { 'Content-Type': 'application/json' });
-          res.end(JSON.stringify({
-            success: false,
-            message: 'Access denied. Quartermaster rank required.'
-          }));
-        }
-      } catch (e) {
-        res.writeHead(400, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ error: 'Invalid JSON' }));
-      }
-    });
-    return;
-  }
-
-  /* ── POST /api/verify ─────────────────────────────────── */
-  if (req.method === 'POST' && parsedUrl.pathname === '/api/verify') {
-    if (isRateLimited(ip)) {
-      res.writeHead(429, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ error: 'Rate limit exceeded. Try again later.' }));
+    if (req.method !== 'POST') {
+      res.writeHead(405, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: 'Method Not Allowed. API routes require POST requests.' }));
       return;
     }
 
-    let body = '';
-    req.on('data', chunk => { body += chunk; });
-    req.on('end', () => {
-      try {
-        const data = JSON.parse(body);
-        const f1 = (data.f1 || '').trim();
-        const f2 = (data.f2 || '').trim();
-        const f3 = (data.f3 || '').trim();
-        const submittedFlag = (data.flag || '').trim();
+    /* ── POST /api/verify-fragment ───────────────────────────── */
+    if (parsedUrl.pathname === '/api/verify-fragment') {
+      if (isRateLimited(ip)) {
+        res.writeHead(429, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'Rate limit exceeded. Try again later.' }));
+        return;
+      }
 
-        const v1Valid = FRAGMENTS[1].includes(f1);
-        const v2Valid = FRAGMENTS[2].includes(f2);
-        const v3Valid = FRAGMENTS[3].includes(f3);
+      let body = '';
+      req.on('data', chunk => { body += chunk; });
+      req.on('end', () => {
+        try {
+          const data = JSON.parse(body);
+          const stage = parseInt(data.stage, 10);
+          const value = (data.value || '').trim();
 
-        if ((v1Valid && v2Valid && v3Valid) || submittedFlag === MASTER_FLAG || submittedFlag === LEGACY_MASTER_FLAG) {
-          res.writeHead(200, { 'Content-Type': 'application/json' });
-          res.end(JSON.stringify({
-            success: true,
-            message: 'The X is found. Claim the haul.',
-            flag: MASTER_FLAG
-          }));
-        } else {
+          if (stage === 1 && FRAGMENTS[1].includes(value)) {
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({
+              success: true,
+              message: 'First Map Fragment verified by Quartermaster.',
+              fragment: FRAGMENTS[1][0]
+            }));
+            return;
+          }
+
+          if (stage === 2 && FRAGMENTS[2].includes(value)) {
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({
+              success: true,
+              message: 'Second Map Fragment verified by Beacon Keeper.',
+              fragment: FRAGMENTS[2][0]
+            }));
+            return;
+          }
+
+          if (stage === 3 && (value.toUpperCase() === PASSPHRASES.strongbox || FRAGMENTS[3].includes(value))) {
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({
+              success: true,
+              message: 'Strongbox cipher unsealed.',
+              fragment: FRAGMENTS[3][0]
+            }));
+            return;
+          }
+
           res.writeHead(401, { 'Content-Type': 'application/json' });
           res.end(JSON.stringify({
             success: false,
-            message: 'Wrong bearing. The vault stays sealed.'
+            message: 'Invalid fragment or passphrase offered to the sea.'
           }));
+        } catch (e) {
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: 'Invalid JSON request payload' }));
         }
-      } catch (e) {
-        res.writeHead(400, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ error: 'Invalid JSON' }));
+      });
+      return;
+    }
+
+    /* ── POST /api/archive-log ──────────────────────────────── */
+    if (parsedUrl.pathname === '/api/archive-log') {
+      let body = '';
+      req.on('data', chunk => { body += chunk; });
+      req.on('end', () => {
+        try {
+          const data = JSON.parse(body);
+          const role = (data.role || '').toLowerCase();
+          if (role === 'quartermaster' || role === 'captain') {
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({
+              success: true,
+              logId: 'log-1708',
+              title: 'Quartermaster Log #1708',
+              fragment: FRAGMENTS[2][0],
+              notes: 'Sparrow 1708 navigation coordinates verified.'
+            }));
+          } else {
+            res.writeHead(403, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({
+              success: false,
+              message: 'Access denied. Quartermaster rank required.'
+            }));
+          }
+        } catch (e) {
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: 'Invalid JSON' }));
+        }
+      });
+      return;
+    }
+
+    /* ── POST /api/verify ─────────────────────────────────── */
+    if (parsedUrl.pathname === '/api/verify') {
+      if (isRateLimited(ip)) {
+        res.writeHead(429, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'Rate limit exceeded. Try again later.' }));
+        return;
       }
-    });
+
+      let body = '';
+      req.on('data', chunk => { body += chunk; });
+      req.on('end', () => {
+        try {
+          const data = JSON.parse(body);
+          const f1 = (data.f1 || '').trim();
+          const f2 = (data.f2 || '').trim();
+          const f3 = (data.f3 || '').trim();
+          const submittedFlag = (data.flag || '').trim();
+
+          const v1Valid = FRAGMENTS[1].includes(f1);
+          const v2Valid = FRAGMENTS[2].includes(f2);
+          const v3Valid = FRAGMENTS[3].includes(f3);
+
+          if ((v1Valid && v2Valid && v3Valid) || submittedFlag === MASTER_FLAG || submittedFlag === LEGACY_MASTER_FLAG) {
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({
+              success: true,
+              message: 'The X is found. Claim the haul.',
+              flag: MASTER_FLAG
+            }));
+          } else {
+            res.writeHead(401, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({
+              success: false,
+              message: 'Wrong bearing. The vault stays sealed.'
+            }));
+          }
+        } catch (e) {
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: 'Invalid JSON' }));
+        }
+      });
+      return;
+    }
+
+    // Unmatched API endpoint
+    res.writeHead(404, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: 'API route not found' }));
     return;
   }
 
@@ -232,6 +252,8 @@ const server = http.createServer((req, res) => {
   const isProtectedFile = 
     lowerPath.includes('/.git') ||
     lowerPath.startsWith('.git') ||
+    lowerPath.startsWith('/api') ||
+    lowerPath.includes('server.js') ||
     lowerPath === '/readme.md' || lowerPath.endsWith('/readme.md') ||
     lowerPath === '/package.json' || lowerPath.endsWith('/package.json') ||
     lowerPath === '/build.js' || lowerPath.endsWith('/build.js') ||
