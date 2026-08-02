@@ -56,28 +56,31 @@ PORT=8080 npm start
 
 ## 🐳 Docker Deployment
 
-To run the challenge inside an isolated container for CTF events:
+Run the challenge inside a hardened, isolated Node Alpine container for local testing or CTF hosting:
 
-### Dockerfile Example
-Create a `Dockerfile` in the root directory:
-```dockerfile
-FROM node:18-alpine
-WORKDIR /app
-COPY package*.json ./
-RUN npm install --production
-COPY . .
-RUN npm run generate
-EXPOSE 3000
-CMD ["npm", "start"]
-```
-
-### Build & Run Container
+### Option A: Docker Compose (Recommended)
 ```bash
-# Build Docker image
-docker build -t black-beacon-ctf .
+# Build & start container in detached mode
+docker-compose up -d --build
 
-# Run container on port 8080
-docker run -d -p 8080:3000 --name black_beacon black-beacon-ctf
+# View container logs
+docker-compose logs -f
+
+# Stop and remove container
+docker-compose down
+```
+*Access the CTF at **`http://localhost:3000`**.*
+
+### Option B: Docker CLI
+```bash
+# Build the Docker image
+docker build -t operation-black-beacon .
+
+# Run the container on port 3000
+docker run -d -p 3000:3000 --name black-beacon-ctf operation-black-beacon
+
+# Stop container
+docker stop black-beacon-ctf
 ```
 
 ---
