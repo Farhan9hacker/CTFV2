@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>⚓ Ghost Ship Archive | Operation Black Beacon</title>
+  <link rel="icon" type="image/png" href="../favicon.png">
+  <link rel="shortcut icon" type="image/png" href="../images/favicon.png">
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    body {
+      background: var(--void);
+      min-height: 100vh;
+    }
+
+    .archive-wrapper {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 6rem 2rem 4rem;
+    }
+
+    .archive-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .visitor-badge {
+      display: inline-block;
+      padding: 0.3rem 1rem;
+      background: rgba(10, 61, 74, 0.5);
+      border: var(--border-teal);
+      border-radius: 20px;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--teal-bright);
+      margin-bottom: 1.5rem;
+    }
+
+    .archive-entry {
+      background: rgba(7, 26, 42, 0.8);
+      border: var(--border-teal);
+      border-radius: 8px;
+      padding: 1.5rem 2rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .entry-title {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      color: var(--gold);
+      margin-bottom: 0.5rem;
+    }
+
+    .entry-body {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--text-main);
+      line-height: 1.7;
+    }
+
+    .lore-quote {
+      background: rgba(42, 26, 8, 0.3);
+      border: var(--border-gold);
+      border-radius: 6px;
+      padding: 1rem 1.5rem;
+      margin-bottom: 2rem;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      color: var(--parchment);
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      color: var(--text-dim);
+      text-decoration: none;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      margin-bottom: 2rem;
+    }
+
+    .back-link:hover {
+      color: var(--teal-bright);
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <a class="nav-brand" href="/">⚓ BLACK BEACON</a>
+    <ul class="nav-links">
+      <li><a href="../index.html">The Wreck</a></li>
+      <li><a href="archive.html">Archive</a></li>
+      <li><a href="beacon.html">Beacon Signal</a></li>
+      <li><a href="../final/index.html">Final Vault</a></li>
+    </ul>
+  </nav>
+
+  <div class="archive-wrapper">
+    <a class="back-link" href="../index.html">← Return to the wreck</a>
+
+
+    <div class="archive-header">
+      <h1 class="section-title">Ghost Ship Archive</h1>
+      <div class="visitor-badge">
+        Rank: <span id="visitor-role">guest</span>
+      </div>
+      <p style="color:var(--text-dim);font-size:0.85rem;font-family:var(--font-mono);">
+        Sparrow sealed the classified hold from crew members. Access level determines record visibility.
+      </p>
+    </div>
+
+
+    <div class="lore-quote">
+      <strong>📜 Quartermaster's Journal:</strong><br>
+      <em>"Old sailors trusted the archive, not parchment or passing winds. The Quartermaster indexed every log into
+        deep local holds; only the Captain's rank key unseals the forgotten manifests."</em>
+    </div>
+
+    <!-- Loading Animation -->
+    <div id="archive-loading-state" class="archive-loading"
+      style="display:flex;align-items:center;justify-content:center;gap:0.75rem;padding:1.5rem;background:rgba(5,13,21,0.5);border:1px dashed rgba(46,196,221,0.3);border-radius:8px;margin-bottom:2rem;">
+      <div class="archive-spinner"
+        style="width:18px;height:18px;border:2px solid var(--teal-bright);border-top-color:transparent;border-radius:50%;animation:spin 0.8s linear infinite;">
+      </div>
+      <span class="loading-text" style="font-family:var(--font-mono);font-size:0.82rem;color:var(--teal-bright);">
+        Consulting the archive... Fetching forgotten manifests...
+      </span>
+    </div>
+
+    <!-- Guest View -->
+    <div id="archive-fake" style="display:none;">
+      <div class="archive-entry">
+        <div class="entry-title">Hold Status</div>
+        <div class="entry-body">
+          The archive is incomplete.
+        </div>
+      </div>
+    </div>
+
+    <!-- Captain View -->
+    <div id="archive-real" style="display:none;">
+      <div class="archive-entry" style="border-color:var(--gold)">
+        <div class="entry-title">Archive Synchronized</div>
+        <div class="entry-body">
+          A classified record has been restored.<br>
+          Manifest Index Updated.<br>
+          One additional record is now available.
+        </div>
+      </div>
+    </div>
+
+    <footer class="archive-footer"
+      style="text-align:center;margin-top:4rem;padding-top:2rem;border-top:1px solid rgba(46,196,221,0.15);font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);">
+      <p class="footer-note">
+        ⚓ Ghost Ship Archive · Local ledger index verified. Elevated rank required to release forgotten manifests.
+      </p>
+    </footer>
+
+  </div>
+
+  <script src="../gate.js"></script>
+  <script src="../js/cursor.js"></script>
+  <script src="../js/layer3.js"></script>
+</body>
+
+</html>

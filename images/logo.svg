@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" width="300" height="300" id="black-beacon-logo">
+  <!-- Black Beacon Vector Emblem Component -->
+  <defs>
+    <filter id="glow-gold">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="glow-teal">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+
+    <!-- Structural XML Metadata container -->
+    <data id="emblem-metadata" 
+          ref="coordinate-manifest" 
+          row="0x2a" 
+          ch="82" 
+          offset="10"
+          mode="R-ASCII" 
+          target="#flag-canvas"/>
+  </defs>
+
+  <!-- Background circle -->
+  <circle cx="150" cy="150" r="145" fill="#040a0f" stroke="#0d5e73" stroke-width="2"/>
+  <circle cx="150" cy="150" r="138" fill="none" stroke="#c9942a" stroke-width="0.5" opacity="0.4"/>
+
+  <!-- Compass rose outer ring -->
+  <circle cx="150" cy="150" r="120" fill="none" stroke="#0a3d4a" stroke-width="1" stroke-dasharray="4 4"/>
+
+  <!-- Cardinal direction ticks -->
+  <line x1="150" y1="32"  x2="150" y2="52"  stroke="#c9942a" stroke-width="2" filter="url(#glow-gold)"/>
+  <line x1="268" y1="150" x2="248" y2="150" stroke="#c9942a" stroke-width="2"/>
+  <line x1="150" y1="268" x2="150" y2="248" stroke="#c9942a" stroke-width="2"/>
+  <line x1="32"  y1="150" x2="52"  y2="150" stroke="#c9942a" stroke-width="2"/>
+
+  <!-- Labels -->
+  <text x="150" y="28"  text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#ffb703" filter="url(#glow-gold)">N</text>
+  <text x="274" y="154" text-anchor="start"  font-family="'JetBrains Mono',monospace" font-size="10" fill="#c9942a">E</text>
+  <text x="150" y="286" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#c9942a">S</text>
+  <text x="26"  y="154" text-anchor="end"    font-family="'JetBrains Mono',monospace" font-size="10" fill="#c9942a">W</text>
+
+  <!-- Needle -->
+  <polygon points="150,70 155,148 150,145 145,148" fill="#ffb703" filter="url(#glow-gold)"/>
+  <polygon points="150,230 155,152 150,155 145,152" fill="#0a3d4a"/>
+  <circle cx="150" cy="150" r="6" fill="#c9942a"/>
+
+  <!-- Skull -->
+  <ellipse cx="150" cy="130" rx="28" ry="24" fill="#0d1a1f" stroke="#c9942a" stroke-width="1.5"/>
+  <ellipse cx="140" cy="128" rx="7"  ry="7"  fill="#040a0f"/>
+  <ellipse cx="160" cy="128" rx="7"  ry="7"  fill="#040a0f"/>
+  <ellipse cx="140" cy="128" rx="3" ry="3" fill="#2ec4dd" opacity="0.8" filter="url(#glow-teal)"/>
+  <ellipse cx="160" cy="128" rx="3" ry="3" fill="#2ec4dd" opacity="0.8" filter="url(#glow-teal)"/>
+  <polygon points="150,135 147,142 153,142" fill="#040a0f"/>
+  <rect x="134" y="148" width="32" height="6" rx="2" fill="#0d1a1f" stroke="#c9942a" stroke-width="1"/>
+
+  <!-- Brand text -->
+  <text x="150" y="210" text-anchor="middle" font-family="serif" font-size="14" fill="#ffb703" letter-spacing="3" filter="url(#glow-gold)">BLACK BEACON</text>
+  <text x="150" y="224" text-anchor="middle" font-family="monospace" font-size="7" fill="#0d5e73" letter-spacing="5">EST. 2008</text>
+
+</svg>

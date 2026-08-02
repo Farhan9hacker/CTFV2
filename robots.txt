@@ -1,0 +1,17 @@
+User-agent: *
+Disallow: /final/
+Disallow: /api/
+Disallow: /wasm/
+
+# Sparrow trusted no navigator who didn't know the countersign.
+# last-modified-by: BLACKBEARD
+# chart-room-access: window.__beacon_override('BLACKBEARD')
+#
+# QUARTERMASTER'S VOYAGE LOG:
+# "The old Captain abandoned ordinary alphabets.
+#  His logs were written with ninety-one symbols."
+#
+# The symbols lie scattered across the main charter:
+# Reassemble them from HTML comments, manifest IDs, cargo numbers, and broken timestamps.
+
+

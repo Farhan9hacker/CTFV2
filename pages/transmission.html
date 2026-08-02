@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>⚓ The Tide's Rhythm | Operation Black Beacon</title>
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    body { background: var(--void); min-height: 100vh; }
+    .tx-wrapper { max-width: 700px; margin: 0 auto; padding: 6rem 2rem 4rem; }
+    .transmission-header { text-align: center; margin-bottom: 3rem; }
+
+    .metadata-panel {
+      background: #050d15; border: var(--border-teal);
+      border-radius: 6px; padding: 1.5rem; font-family: var(--font-mono);
+      font-size: 0.82rem; color: var(--teal-bright); margin: 2rem 0;
+    }
+    .metadata-panel .meta-row {
+      display: grid; grid-template-columns: 180px 1fr; gap: 0.5rem;
+      padding: 0.3rem 0; border-bottom: 1px solid rgba(46,196,221,0.08);
+    }
+    .metadata-panel .meta-key { color: var(--text-dim); }
+    .metadata-panel .meta-val { color: var(--teal-bright); }
+    .metadata-panel .meta-val.highlight { color: var(--gold); }
+
+    .timing-arena {
+      background: rgba(7,26,42,0.8); border: var(--border-teal);
+      border-radius: 12px; padding: 2.5rem; text-align: center; margin: 2rem 0;
+    }
+
+    .timing-buttons {
+      display: flex; gap: 1.5rem; justify-content: center; margin: 2rem 0; flex-wrap: wrap;
+    }
+
+    .timing-btn {
+      width: 110px; height: 110px; border-radius: 50%;
+      border: 2px solid var(--teal-deep); background: rgba(10,61,74,0.3);
+      font-size: 2.5rem; cursor: pointer; transition: all 0.15s ease;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .timing-btn span.label { font-family: var(--font-mono); font-size: 0.6rem; color: var(--text-dim); }
+    .timing-btn:hover { border-color: var(--teal-bright); box-shadow: var(--glow-teal); }
+
+    .timing-status {
+      font-family: var(--font-mono); font-size: 0.9rem; padding: 0.8rem 1.5rem;
+      border-radius: 4px; min-height: 3rem; display: flex; align-items: center; justify-content: center;
+    }
+    .timing-status.info    { color: var(--teal-bright); background: rgba(46,196,221,0.05); }
+    .timing-status.error   { color: var(--red-warning); background: rgba(192,57,43,0.08); }
+    .timing-status.success { color: var(--green-ok);    background: rgba(39,174,96,0.08); }
+
+    #timing-flag {
+      display: none; font-family: var(--font-mono); font-size: 1.1rem;
+      color: var(--gold); text-align: center; padding: 1.2rem 2rem;
+      background: rgba(255,183,3,0.05); border: var(--border-gold);
+      border-radius: 6px; margin-top: 1.5rem; box-shadow: var(--glow-gold);
+    }
+
+    .back-link {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      color: var(--text-dim); text-decoration: none;
+      font-family: var(--font-mono); font-size: 0.82rem; margin-bottom: 2rem;
+    }
+    .back-link:hover { color: var(--teal-bright); }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="/">⚓ BLACK BEACON</a>
+</nav>
+
+<div class="tx-wrapper">
+  <a class="back-link" href="/pages/beacon.html">← Back to beacon</a>
+
+  <div class="transmission-header">
+    <h1 class="section-title">The Tide's Rhythm</h1>
+    <p style="color:var(--text-dim);font-family:var(--font-mono);font-size:0.85rem;">
+      Fragment IV — Sparrow locked this with a rhythm only the sea knows.
+    </p>
+  </div>
+
+  <!-- EXIF Metadata Display -->
+  <div class="metadata-panel">
+    <p style="color:var(--gold);font-size:0.85rem;margin-bottom:1rem;">
+      📷 beacon.png — Image Metadata Chunks
+    </p>
+    <div class="meta-row"><span class="meta-key">File Name</span><span class="meta-val">beacon.png</span></div>
+    <div class="meta-row"><span class="meta-key">Description</span><span class="meta-val">The Thirteenth Fragment — Final Lock</span></div>
+    <div class="meta-row"><span class="meta-key">fragment-xii-hint</span><span class="meta-val highlight">sequence: anchor,wave,skull</span></div>
+    <div class="meta-row"><span class="meta-key">timing-constraint</span><span class="meta-val highlight">500ms between each press</span></div>
+  </div>
+
+  <!-- Timing Puzzle Interface -->
+  <div class="timing-arena">
+    <h2 style="font-family:var(--font-display);color:var(--gold);margin-bottom:0.5rem;">Sparrow's Rhythm Mechanism</h2>
+
+    <p style="color:var(--text-dim);font-family:var(--font-mono);font-size:0.82rem;margin-bottom:1.5rem;">
+      Execute the sequence within <strong style="color:var(--gold);">500ms</strong> per press.
+    </p>
+
+    <div class="timing-buttons">
+      <button class="timing-btn" id="btn-anchor" title="Anchor">⚓<span class="label">ANCHOR</span></button>
+      <button class="timing-btn" id="btn-wave" title="Wave">🌊<span class="label">WAVE</span></button>
+      <button class="timing-btn" id="btn-skull" title="Skull">☠<span class="label">SKULL</span></button>
+    </div>
+
+    <div class="timing-status info" id="timing-status">
+      Click the first symbol to begin sequence.
+    </div>
+
+    <div id="timing-flag"></div>
+  </div>
+
+  <div style="text-align:center;padding:2rem 0;">
+    <p style="font-family:var(--font-mono);font-size:0.82rem;color:var(--text-dim);">
+      Proceed to the <a href="/final/index.html" style="color:var(--gold);">⚓ Final Vault</a> when ready.
+    </p>
+  </div>
+
+</div>
+
+<script src="../js/cursor.js"></script>
+<script src="../js/timing-puzzle.js"></script>
+</body>
+</html>

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>⚓ Final Vault — Find the X | Operation Black Beacon</title>
+  <link rel="icon" type="image/png" href="../favicon.png">
+  <link rel="shortcut icon" type="image/png" href="../images/favicon.png">
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    body { background: var(--void); min-height: 100vh; overflow-x: hidden; }
+    .vault-wrapper {
+      max-width: 700px; margin: 0 auto; padding: 6rem 2rem 4rem;
+      position: relative; z-index: 10;
+    }
+    .vault-chest {
+      font-size: 5rem; text-align: center; margin-bottom: 2rem;
+      animation: chest-float 4s ease-in-out infinite;
+    }
+    @keyframes chest-float {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-10px); }
+    }
+    .vault-gate {
+      background: linear-gradient(135deg, rgba(7,26,42,0.95), rgba(4,10,15,0.98));
+      border: var(--border-gold); border-radius: 12px; padding: 3rem; text-align: center;
+    }
+    .flag-row {
+      display: grid; grid-template-columns: 120px 1fr; gap: 0.5rem 1rem;
+      align-items: center; margin: 1.2rem 0; text-align: left;
+    }
+    .flag-label { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-dim); }
+    .flag-field {
+      background: rgba(5,13,21,0.9); border: var(--border-teal);
+      border-radius: 4px; padding: 0.7rem 1rem; font-family: var(--font-mono);
+      font-size: 0.85rem; color: var(--teal-bright); outline: none; width: 100%;
+    }
+    .hash-display {
+      background: rgba(4,10,15,0.9); border: 1px solid rgba(200,200,200,0.1);
+      border-radius: 4px; padding: 0.8rem 1rem; font-family: var(--font-mono);
+      font-size: 0.82rem; color: var(--text-dim); word-break: break-all; margin: 0.5rem 0; text-align: left;
+    }
+    .verify-btn {
+      width: 100%; padding: 1rem 2rem; background: linear-gradient(135deg, var(--brass), var(--gold));
+      border: none; border-radius: 6px; color: var(--ink); font-family: var(--font-mono);
+      font-weight: 700; font-size: 1rem; cursor: pointer; transition: all 0.3s ease; margin-top: 1.5rem;
+      box-shadow: var(--glow-gold);
+    }
+    .verify-btn:hover { transform: translateY(-2px); }
+
+    #victory-screen {
+      display: none; position: fixed; inset: 0; z-index: 9999;
+      background: radial-gradient(ellipse at center, rgba(7,26,42,0.98) 0%, rgba(4,10,15,0.99) 100%);
+      flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 2rem;
+    }
+    #victory-screen.active { display: flex; }
+    .victory-title {
+      font-family: var(--font-display); font-size: clamp(2rem, 6vw, 4.5rem);
+      color: var(--gold); text-shadow: var(--glow-gold); margin-bottom: 1rem;
+    }
+    .victory-flag {
+      font-family: var(--font-mono); font-size: 1.4rem; color: var(--gold);
+      background: rgba(255,183,3,0.08); border: var(--border-gold); border-radius: 8px;
+      padding: 1.2rem 2.5rem; margin: 1.5rem 0; box-shadow: var(--glow-gold);
+    }
+    #error-msg {
+      display: none; color: var(--red-warning); font-family: var(--font-mono);
+      font-size: 0.85rem; margin-top: 1rem; padding: 0.8rem 1rem;
+      background: rgba(192,57,43,0.08); border: 1px solid var(--red-warning); border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="three-canvas"></canvas>
+<canvas id="particles-canvas"></canvas>
+
+<nav>
+  <a class="nav-brand" href="/">⚓ BLACK BEACON</a>
+  <ul class="nav-links">
+    <li><a href="../index.html">The Wreck</a></li>
+    <li><a href="../pages/archive.html">Archive</a></li>
+    <li><a href="../pages/beacon.html">Beacon Signal</a></li>
+    <li><a href="index.html">Final Vault</a></li>
+  </ul>
+</nav>
+
+<!-- Victory Screen -->
+<div id="victory-screen">
+  <canvas id="confetti-canvas" style="position:absolute;inset:0;pointer-events:none;"></canvas>
+  <p style="font-size:5rem;margin-bottom:1rem;animation:chest-float 2s ease-in-out infinite;">🏴‍☠️</p>
+  <h1 class="victory-title">THE X IS FOUND</h1>
+  <p style="color:var(--parchment);font-family:var(--font-mono);font-size:0.9rem;margin-bottom:1rem;">
+    Captain Jack Sparrow's Last Haul is yours.
+  </p>
+  <div class="victory-flag" id="master-flag-display"></div>
+  <p style="font-family:var(--font-mono);font-size:0.88rem;color:var(--teal-bright);max-width:600px;line-height:1.9;">
+    The chart is whole. The bearing is true.<br><br>
+    <strong style="color:var(--gold);">The beacon answers. You are Packet Pirates.</strong>
+  </p>
+  <button onclick="document.getElementById('victory-screen').classList.remove('active')"
+    style="margin-top:2rem;padding:0.8rem 2rem;background:rgba(46,196,221,0.1);border:var(--border-teal);border-radius:4px;color:var(--teal-bright);font-family:var(--font-mono);cursor:pointer;">
+    ← Return to the wreck
+  </button>
+</div>
+
+<!-- Main Vault Form -->
+<div class="vault-wrapper">
+  <div style="text-align:center;margin-bottom:3rem;">
+    <div class="vault-chest">🗝️</div>
+    <h1 class="section-title">The Final Vault</h1>
+    <p style="color:var(--text-dim);font-family:var(--font-mono);font-size:0.85rem;">
+      Reassemble the torn chart. Compute the master bearing. Claim the X.
+    </p>
+  </div>
+
+  <div class="vault-gate">
+    <p class="section-label" style="justify-content:center;">⚓ Vault Guardian's Verification</p>
+
+    <div class="flag-row">
+      <span class="flag-label">FRAGMENT_I</span>
+      <input class="flag-field" id="f1" type="text" placeholder="SPARROW{…}" autocomplete="off" spellcheck="false">
+    </div>
+    <div class="flag-row">
+      <span class="flag-label">FRAGMENT_II</span>
+      <input class="flag-field" id="f2" type="text" placeholder="SPARROW{…}" autocomplete="off" spellcheck="false">
+    </div>
+    <div class="flag-row">
+      <span class="flag-label">FRAGMENT_III</span>
+      <input class="flag-field" id="f3" type="text" placeholder="SPARROW{…}" autocomplete="off" spellcheck="false">
+    </div>
+
+    <div style="margin:1.5rem 0;text-align:left;">
+      <p class="flag-label" style="margin-bottom:0.4rem;">SHA-256 Calculated Master Bearing</p>
+      <div class="hash-display" id="hash-preview">Present all three chart fragments to compute bearing…</div>
+    </div>
+
+    <button class="verify-btn" id="verify-btn">
+      ⚓ Present Map Fragments — Open the Vault
+    </button>
+
+    <div id="error-msg"></div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="../three-scene.js"></script>
+<script src="../js/cursor.js"></script>
+<script src="../js/particles.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  const inputs = ['f1','f2','f3'].map(id => document.getElementById(id));
+  const hashPreview = document.getElementById('hash-preview');
+
+  function isAuthenticFragment(v) {
+    return (v.startsWith('SPARROW{') || v.startsWith('VANE{')) && v.endsWith('}');
+  }
+
+  function updatePreview() {
+    const vals = inputs.map(i => i ? i.value.trim() : '');
+    const validCount = vals.filter(isAuthenticFragment).length;
+
+    if (validCount === 3) {
+      hashPreview.textContent = 'All 3 chart fragments presented. Ready for Vault Guardian verification.';
+      hashPreview.style.color = 'var(--teal-bright)';
+    } else if (validCount > 0) {
+      hashPreview.textContent = `${validCount}/3 chart fragments entered. Present all fragments to proceed.`;
+      hashPreview.style.color = 'var(--gold)';
+    } else {
+      hashPreview.textContent = 'Present all three chart fragments to compute bearing…';
+      hashPreview.style.color = 'var(--text-dim)';
+    }
+  }
+
+  inputs.forEach(i => { if (i) i.addEventListener('input', updatePreview); });
+
+  document.getElementById('verify-btn').addEventListener('click', async function () {
+    const errorEl = document.getElementById('error-msg');
+    errorEl.style.display = 'none';
+
+    const vals = inputs.map(i => i ? i.value.trim() : '');
+    if (!vals.every(isAuthenticFragment)) {
+      errorEl.textContent = '⚓ The Vault Guardian demands all chart fragments before unsealing the vault.';
+      errorEl.style.display = 'block';
+      return;
+    }
+
+    try {
+      const res = await fetch('/api/verify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ f1: vals[0], f2: vals[1], f3: vals[2] })
+      });
+      
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success && data.flag) {
+          document.getElementById('master-flag-display').textContent = data.flag;
+          document.getElementById('victory-screen').classList.add('active');
+          
+          const p = JSON.parse(localStorage.getItem('bb_progress') || '{"layers":[]}');
+          if (!p.layers.includes(3)) p.layers.push(3);
+          if (!p.layers.includes(4)) p.layers.push(4);
+          localStorage.setItem('bb_progress', JSON.stringify(p));
+
+          startConfetti();
+          return;
+        }
+      }
+
+      errorEl.textContent = '⚓ The sea rejects this offering. Check your fragment values.';
+      errorEl.style.display = 'block';
+    } catch (e) {
+      errorEl.textContent = '⚓ Verification server error (HTTP 503). The vault stays sealed.';
+      errorEl.style.display = 'block';
+    }
+  });
+
+  function startConfetti() {
+    const canvas = document.getElementById('confetti-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const particles = [];
+    const colors = ['#ffb703','#2ec4dd','#c9942a','#d4b896','#ffffff'];
+
+    for (let i = 0; i < 150; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: -10 - Math.random() * 200,
+        vx: (Math.random() - 0.5) * 3,
+        vy: Math.random() * 4 + 2,
+        size: Math.random() * 6 + 4,
+        color: colors[Math.floor(Math.random() * colors.length)]
+      });
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (const p of particles) {
+        p.x += p.vx; p.y += p.vy;
+        ctx.fillStyle = p.color;
+        ctx.fillRect(p.x, p.y, p.size, p.size);
+      }
+      requestAnimationFrame(draw);
+    }
+    draw();
+  }
+})();
+</script>
+
+</body>
+</html>

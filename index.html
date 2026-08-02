@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Operation Black Beacon — Captain Jack Sparrow's Lost Wreck. Reassemble the torn fragments.">
+  <meta name="robots" content="noindex">
+  <title>⚓ Operation Black Beacon | Packet Pirates CTF</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="shortcut icon" type="image/png" href="images/favicon.png">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .ember-j { animation-delay: 74ms;  }
+    .ember-a { animation-delay: 65ms;  }
+    .ember-c { animation-delay: 67ms;  }
+    .ember-k { animation-delay: 75ms;  }
+    .ember-w { animation-delay: 119ms; }
+    .ember-s { animation-delay: 97ms;  }
+    .ember-m { animation-delay: 115ms; }
+    .ember-x { animation-delay: 109ms; }
+  </style>
+</head>
+<body>
+
+<div id="custom-cursor">
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12 2L14.09 8.26L21 9.27L16.5 13.64L17.82 21L12 17.77L6.18 21L7.5 13.64L3 9.27L9.91 8.26L12 2Z"/>
+  </svg>
+</div>
+
+<div class="progress-strip" id="progress-bar" style="width:0%"></div>
+
+<div id="initial-black-fade"></div>
+<div id="team-reveal-overlay">
+  <div class="team-reveal-title" id="team-title">
+    <span class="reveal-letter" data-idx="0">P</span>
+    <span class="reveal-letter" data-idx="1">A</span>
+    <span class="reveal-letter" data-idx="2">C</span>
+    <span class="reveal-letter" data-idx="3">K</span>
+    <span class="reveal-letter" data-idx="4">E</span>
+    <span class="reveal-letter" data-idx="5">T</span>
+    <span class="reveal-space">&nbsp;</span>
+    <span class="reveal-letter" data-idx="6">P</span>
+    <span class="reveal-letter" data-idx="7">I</span>
+    <span class="reveal-letter" data-idx="8">R</span>
+    <span class="reveal-letter" data-idx="9">A</span>
+    <span class="reveal-letter" data-idx="10">T</span>
+    <span class="reveal-letter" data-idx="11">E</span>
+    <span class="reveal-letter" data-idx="12">S</span>
+  </div>
+  <p class="team-reveal-subtitle" id="team-subtitle">OPERATION BLACK BEACON</p>
+</div>
+
+<div id="voyage-scroll-track" style="height: 400vh; position: absolute; top: 0; left: 0; right: 0; pointer-events: none;"></div>
+<canvas id="particles-canvas"></canvas>
+<canvas id="three-canvas"></canvas>
+
+<div id="lock-overlay" role="dialog" aria-label="Chart Room Sealed">
+  <div class="lock-skull">☠</div>
+  <h1 class="lock-title">⚓ THE CHART ROOM IS SEALED ⚓</h1>
+  <div class="lock-divider"></div>
+  <p class="lock-subtitle">
+    Sparrow trusted no one who came looking with open eyes.<br>
+    Only a pirate who knows a lock is a suggestion gets aboard.
+  </p>
+  <div class="lock-wave"></div>
+</div>
+
+<nav>
+  <a class="nav-brand" href="/">⚓ BLACK BEACON</a>
+  <ul class="nav-links">
+    <li><a href="#" id="replay-story-btn">📜 Lore</a></li>
+    <li><a href="#story">The Legend</a></li>
+    <li><a href="#fragments">Fragments</a></li>
+    <li><a href="pages/archive.html">Archive</a></li>
+    <li><a href="final/index.html">Final Vault</a></li>
+  </ul>
+</nav>
+
+<div class="scroll-down-banner" id="top-scroll-banner" onclick="document.getElementById('hero').scrollIntoView({behavior:'smooth'})">
+  <span>📜 SCROLL DOWN TO EXPLORE SPARROW'S WRECK & RECOVER MAP FRAGMENTS</span>
+  <span class="scroll-prompt-arrow">↓</span>
+</div>
+
+<div id="app">
+
+  <section id="hero">
+    <p class="hero-eyebrow">Packet Pirates CTF · Operation Black Beacon</p>
+    <h1 class="hero-title">BLACK<br>BEACON</h1>
+    <p class="hero-subtitle">Captain Jack Sparrow's Last Haul</p>
+    <blockquote class="hero-lore">
+      For forty years, every pirate crew alive has chased the same rumor:
+      <em>Captain Jack Sparrow's Last Haul</em> — a treasure so vast he stopped raiding
+      ships and started raiding banks. When the Navy cornered him, Sparrow
+      didn't bury one map. He <em>burned it, tore it into fragments</em>, and
+      hid each piece behind a mechanism meant to drown a navy scout and reward a
+      true pirate.<br><br>
+      You've reached the wreck of the <em>Black Beacon</em>.<br><br>
+      <strong>Chart the course. Recover every fragment. Find the X. Claim the haul.</strong>
+    </blockquote>
+    <a class="btn-primary" href="#fragments" id="begin-hunt">
+      ⚓ BEGIN THE HUNT
+    </a>
+  </section>
+
+  <section class="story-section" id="story">
+    <div class="parchment-panel">
+      <p class="section-label">Captain's Log — Entry I</p>
+      <h2 class="section-title">The Three Fragments</h2>
+      <div class="section-body">
+        <p>
+          Sparrow's chart was no single sheet of parchment. Before his capture, he
+          divided the map into <strong>three torn fragments</strong> — each
+          protected by a different lock. The locks are not iron and key. They are
+          observation, patience, and the pirate's oldest skill:
+          <em>looking where others don't think to look.</em>
+        </p>
+        <div class="divider"></div>
+        <p>
+          Collect all sub-flags hidden across the wreck.
+          When you hold them, <strong>concatenate them in sequence</strong> —
+          reassembling the map. Feed the assembled chart through
+          the vault mechanism to calculate the master bearing pointing to the X.
+        </p>
+        <div class="divider"></div>
+        <p>
+          <strong>Flag Format:</strong> <code>SPARROW{...}</code><br>
+          <strong>Master Flag Format:</strong> <code>SPARROW{...}</code>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cargo-manifest-section" id="manifest-rR!&.^El" data-manifest-id="manifest-rR!&.^El" style="max-width:860px; margin:2rem auto; padding:0 1.5rem;">
+    <div class="parchment-panel" style="border-color:var(--teal-bright);">
+      <p class="section-label">Quartermaster's Register · Voyage Cargo Manifest</p>
+      <h3 style="font-family:var(--font-display);color:var(--gold);font-size:1.4rem;margin-bottom:1rem;">
+        Manifest Entry ID: <code style="color:var(--teal-bright);">rR!&.^El</code>
+      </h3>
+      <div style="font-family:var(--font-mono);font-size:0.85rem;color:var(--parchment);line-height:1.8;">
+        <p>
+          "The old Captain abandoned ordinary alphabets. His logs were written with ninety-one symbols."
+        </p>
+        <!-- *Djd#{]@ -->
+        <div class="divider"></div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1rem;margin-top:1rem;">
+          <div style="background:rgba(5,13,21,0.6);padding:0.8rem 1.2rem;border:1px solid rgba(46,196,221,0.2);border-radius:6px;">
+            <span style="color:var(--text-dim);font-size:0.75rem;display:block;">CARGO REGISTRY NUMBER</span>
+            <code class="cargo-number" data-cargo-num="m}UKd,2Y" style="color:var(--gold);font-weight:bold;font-size:0.95rem;">CARGO NO: m}UKd,2Y</code>
+          </div>
+          <div style="background:rgba(5,13,21,0.6);padding:0.8rem 1.2rem;border:1px solid rgba(46,196,221,0.2);border-radius:6px;">
+            <span style="color:var(--text-dim);font-size:0.75rem;display:block;">LOG TIMESTAMP (CORRUPTED)</span>
+            <time datetime="1708-09-14T91:91:91" class="broken-timestamp" data-broken-stamp="<!G)uF" style="color:var(--teal-bright);font-size:0.88rem;">
+              1708-09-14 [ERR: <!G)uF]
+            </time>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="fragments" style="padding:4rem 2rem; text-align:center;">
+    <p class="section-label" style="justify-content:center; max-width:900px; margin:0 auto 2rem;">
+      Torn Fragments — Progression Track
+    </p>
+    <div class="fragment-grid">
+      <div class="fragment-card" id="fc-0">
+        <span class="fragment-num">0</span>
+        <div class="fragment-title">The Sealed Chart Room</div>
+        <div class="fragment-status">Anti-Inspect Gate</div>
+      </div>
+      <div class="fragment-card locked" id="fc-1">
+        <span class="fragment-num">I</span>
+        <div class="fragment-title">First Torn Page</div>
+        <div class="fragment-status">Fragment I</div>
+      </div>
+      <div class="fragment-card locked" id="fc-2">
+        <span class="fragment-num">II</span>
+        <div class="fragment-title">Ghost Ship Archive</div>
+        <div class="fragment-status">Fragment II</div>
+      </div>
+      <div class="fragment-card locked" id="fc-3">
+        <span class="fragment-num">III</span>
+        <div class="fragment-title">Sparrow's Strongbox</div>
+        <div class="fragment-status">Fragment III</div>
+      </div>
+    </div>
+  </section>
+
+  <div style="position:fixed;bottom:0;left:0;right:0;pointer-events:none;overflow:hidden;height:200px;">
+    <div class="ember ember-j" style="left:10%"></div>
+    <div class="ember ember-a" style="left:20%"></div>
+    <div class="ember ember-c" style="left:33%"></div>
+    <div class="ember ember-k" style="left:45%"></div>
+    <div class="ember ember-w" style="left:57%"></div>
+    <div class="ember ember-s" style="left:67%"></div>
+    <div class="ember ember-m" style="left:78%"></div>
+    <div class="ember ember-x" style="left:90%"></div>
+  </div>
+
+  <footer style="text-align:center;padding:3rem;font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);border-top:var(--border-teal);">
+    <p>⚓ Packet Pirates CTF · Operation Black Beacon · Est. 2008</p>
+    <p style="margin-top:0.5rem;opacity:0.5;">
+      Fly the colors. Prove you are Packet Pirates.
+    </p>
+  </footer>
+
+<div id="lore-transition-overlay">
+  <div class="lore-transition-box">
+    <div class="lore-transition-title">Operation Black Beacon</div>
+    <div class="lore-transition-status">
+      <div class="lore-transition-spinner"></div>
+      <span id="lore-transition-text">Updating Captain's Charts...</span>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="gate.js"></script>
+<script src="three-scene.js"></script>
+<script src="js/cursor.js"></script>
+<script src="js/particles.js"></script>
+<script src="js/layer1.js"></script>
+<script>
+  window.addEventListener('scroll', () => {
+    const banner = document.getElementById('top-scroll-banner');
+    if (banner) {
+      if (window.scrollY > 120) {
+        banner.style.opacity = '0';
+        banner.style.pointerEvents = 'none';
+      } else {
+        banner.style.opacity = '1';
+        banner.style.pointerEvents = 'auto';
+      }
+    }
+  });
+
+  const progress = JSON.parse(localStorage.getItem('bb_progress') || '{"layers":[]}');
+  const progressBar = document.getElementById('progress-bar');
+  if (progressBar) {
+    const pct = (progress.layers.length / 6) * 100;
+    progressBar.style.width = pct + '%';
+  }
+
+  progress.layers.forEach(l => {
+    const card = document.getElementById('fc-' + l);
+    if (card) {
+      card.classList.remove('locked');
+      card.classList.add('found');
+    }
+  });
+
+  const transitionOverlay = document.getElementById('lore-transition-overlay');
+  const transitionText = document.getElementById('lore-transition-text');
+  
+  document.querySelectorAll('a[href]').forEach(link => {
+    const target = link.getAttribute('href');
+    if (target && (target.includes('archive') || target.includes('final') || target.includes('beacon'))) {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (transitionOverlay) {
+          if (target.includes('archive')) {
+            transitionText.textContent = "Synchronizing Forgotten Logs...";
+          } else if (target.includes('final')) {
+            transitionText.textContent = "Decrypting Navigation Records...";
+          } else {
+            transitionText.textContent = "Updating Captain's Charts...";
+          }
+          transitionOverlay.classList.add('active');
+          setTimeout(() => {
+            window.location.href = target;
+          }, 450);
+        } else {
+          window.location.href = target;
+        }
+      });
+    }
+  });
+</script>
+<script src="js/story-popup.js"></script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>http://localhost/</loc>
+    <lastmod>2008-09-14</lastmod>
+    <changefreq>never</changefreq>
+    <priority>1.0</priority>
+    <!-- last-modified-by: BLACKBEARD — if ye seek the chart room, speak the name -->
+  </url>
+  <url>
+    <loc>http://localhost/pages/archive.html</loc>
+    <lastmod>2008-09-14</lastmod>
+    <changefreq>never</changefreq>
+    <priority>0.5</priority>
+  </url>
+</urlset>

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>⚓ Beacon Signal | Operation Black Beacon</title>
+  <link rel="icon" type="image/png" href="../favicon.png">
+  <link rel="shortcut icon" type="image/png" href="../images/favicon.png">
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    body {
+      background: var(--void);
+      min-height: 100vh;
+    }
+
+    .beacon-wrapper {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 6rem 2rem 4rem;
+    }
+
+    .beacon-artwork-card {
+      width: 100%;
+      max-height: 380px;
+      object-fit: cover;
+      border-radius: 12px;
+      border: var(--border-gold);
+      box-shadow: var(--glow-gold);
+      margin-bottom: 2rem;
+      display: block;
+    }
+
+    .signal-ring {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 3px solid var(--teal-bright);
+      margin: 0 auto 2rem;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: ring-pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes ring-pulse {
+
+      0%,
+      100% {
+        box-shadow: 0 0 20px var(--teal-glow);
+      }
+
+      50% {
+        box-shadow: 0 0 40px var(--teal-glow);
+      }
+    }
+
+    .beacon-icon {
+      font-size: 2.5rem;
+      z-index: 1;
+    }
+
+    .section-card {
+      background: rgba(7, 26, 42, 0.9);
+      border: var(--border-teal);
+      border-radius: 8px;
+      padding: 2rem;
+      margin: 2rem 0;
+    }
+
+    .morse-visual {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 4px;
+      padding: 1rem;
+      background: rgba(4, 10, 15, 0.8);
+      border-radius: 4px;
+      margin: 1rem 0;
+    }
+
+    .morse-bar {
+      height: 4px;
+      background: var(--teal-bright);
+      border-radius: 2px;
+    }
+
+    .morse-dot {
+      width: 8px;
+    }
+
+    .morse-dash {
+      width: 24px;
+    }
+
+    .morse-gap {
+      width: 12px;
+      background: transparent;
+    }
+
+    .svg-logo-display {
+      max-width: 200px;
+      margin: 0 auto;
+      display: block;
+      border-radius: 50%;
+      box-shadow: var(--glow-teal);
+    }
+
+    #flag-canvas {
+      display: block;
+      margin: 1rem auto;
+      border: 1px solid rgba(46, 196, 221, 0.2);
+      border-radius: 4px;
+      max-width: 100%;
+    }
+
+    #wasm-input {
+      background: rgba(5, 13, 21, 0.9);
+      border: var(--border-teal);
+      border-radius: 4px;
+      padding: 0.8rem 1.2rem;
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      color: var(--teal-bright);
+      width: 100%;
+      margin: 0.8rem 0;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      color: var(--text-dim);
+      text-decoration: none;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      margin-bottom: 2rem;
+    }
+
+    .back-link:hover {
+      color: var(--teal-bright);
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <a class="nav-brand" href="/">⚓ BLACK BEACON</a>
+  </nav>
+
+  <div class="beacon-wrapper">
+    <a class="back-link" href="../index.html">← Return to the wreck</a>
+
+
+    <img src="../images/black-beacon.jpg" alt="Black Beacon Artwork" class="beacon-artwork-card">
+
+    <div style="text-align:center; margin-bottom:3rem;">
+      <div class="signal-ring">
+        <span class="beacon-icon">📡</span>
+      </div>
+      <h1 class="section-title">The Beacon Signal</h1>
+      <p style="color:var(--text-dim);font-family:var(--font-mono);font-size:0.85rem;">
+        The beacon broadcasts a continuous pattern across the sea.
+      </p>
+    </div>
+
+    <!-- Morse Signal Section -->
+    <div class="section-card">
+      <p class="section-label">Fragment III — Morse Transmission</p>
+      <h2 style="font-family:var(--font-display);color:var(--gold);margin-bottom:1rem;">The Signal Broadcast</h2>
+      <div class="morse-visual" title="Morse Code Broadcast">
+        <!-- T: - -->
+        <div class="morse-bar morse-dash"></div>
+        <div class="morse-bar morse-gap"></div>
+        <!-- H: .... -->
+        <div class="morse-bar morse-dot"></div>
+        <div class="morse-bar morse-dot"></div>
+        <div class="morse-bar morse-dot"></div>
+        <div class="morse-bar morse-dot"></div>
+        <div class="morse-bar morse-gap"></div>
+        <!-- E: . -->
+        <div class="morse-bar morse-dot"></div>
+        <div class="morse-bar morse-gap"></div>
+        <!-- E: . -->
+        <div class="morse-bar morse-dot"></div>
+        <div class="morse-bar morse-gap"></div>
+        <!-- M: -- -->
+        <div class="morse-bar morse-dash"></div>
+        <div class="morse-bar morse-dash"></div>
+        <div class="morse-bar morse-gap"></div>
+        <!-- B: -... -->
+        <div class="morse-bar morse-dash"></div>
+        <div class="morse-bar morse-dot"></div>
+        <div class="morse-bar morse-dot"></div>
+        <div class="morse-bar morse-dot"></div>
+        <div class="morse-bar morse-gap"></div>
+        <!-- L: .-.. -->
+        <div class="morse-bar morse-dot"></div>
+        <div class="morse-bar morse-dash"></div>
+        <div class="morse-bar morse-dot"></div>
+        <div class="morse-bar morse-dot"></div>
+        <div class="morse-bar morse-gap"></div>
+        <!-- E: . -->
+        <div class="morse-bar morse-dot"></div>
+        <div class="morse-bar morse-gap"></div>
+        <!-- M: -- -->
+        <div class="morse-bar morse-dash"></div>
+        <div class="morse-bar morse-dash"></div>
+        <div class="morse-bar morse-gap"></div>
+        <!-- R: .-. -->
+        <div class="morse-bar morse-dot"></div>
+        <div class="morse-bar morse-dash"></div>
+        <div class="morse-bar morse-dot"></div>
+        <div class="morse-bar morse-gap"></div>
+        <!-- E: . -->
+        <div class="morse-bar morse-dot"></div>
+        <div class="morse-bar morse-gap"></div>
+        <!-- M: -- -->
+        <div class="morse-bar morse-dash"></div>
+        <div class="morse-bar morse-dash"></div>
+        <div class="morse-bar morse-gap"></div>
+        <!-- E: . -->
+        <div class="morse-bar morse-dot"></div>
+        <div class="morse-bar morse-gap"></div>
+        <!-- M: -- -->
+        <div class="morse-bar morse-dash"></div>
+        <div class="morse-bar morse-dash"></div>
+        <div class="morse-bar morse-gap"></div>
+        <!-- B: -... -->
+        <div class="morse-bar morse-dash"></div>
+        <div class="morse-bar morse-dot"></div>
+        <div class="morse-bar morse-dot"></div>
+        <div class="morse-bar morse-dot"></div>
+        <div class="morse-bar morse-gap"></div>
+        <!-- E: . -->
+        <div class="morse-bar morse-dot"></div>
+        <div class="morse-bar morse-gap"></div>
+        <!-- R: .-. -->
+        <div class="morse-bar morse-dot"></div>
+        <div class="morse-bar morse-dash"></div>
+        <div class="morse-bar morse-dot"></div>
+        <div class="morse-bar morse-gap"></div>
+        <!-- S: ... -->
+        <div class="morse-bar morse-dot"></div>
+        <div class="morse-bar morse-dot"></div>
+        <div class="morse-bar morse-dot"></div>
+      </div>
+    </div>
+
+    <!-- SVG Emblem Section -->
+    <div class="section-card" style="text-align:center;">
+      <p class="section-label">The Ship's Emblem</p>
+      <h2 style="font-family:var(--font-display);color:var(--gold);margin-bottom:1.5rem;">Sparrow's Mark</h2>
+      <img src="../images/logo.svg" alt="Black Beacon Logo" class="svg-logo-display">
+      <p style="color:var(--text-dim);font-family:var(--font-mono);font-size:0.82rem;margin-top:1rem;">
+        The emblem of the Black Beacon carries its history in its structure.
+      </p>
+    </div>
+
+    <!-- Canvas Coordinates Section -->
+    <div class="section-card">
+      <p class="section-label">Painted Coordinates</p>
+      <h2 style="font-family:var(--font-display);color:var(--gold);margin-bottom:1rem;">The Canvas</h2>
+      <p style="color:var(--text-dim);font-family:var(--font-mono);font-size:0.85rem;margin-bottom:1.5rem;">
+        Sparrow painted his coordinates into the canvas pixels — readable to those who inspect row math.
+      </p>
+      <canvas id="flag-canvas"></canvas>
+    </div>
+
+    <!-- WASM Strongbox Section -->
+    <div class="section-card">
+      <p class="section-label">Fragment III — Sparrow's Strongbox</p>
+      <h2 style="font-family:var(--font-display);color:var(--gold);margin-bottom:1rem;">Strongbox Cipher Engine</h2>
+
+      <p style="color:var(--text-dim);font-family:var(--font-mono);font-size:0.85rem;margin-bottom:1.5rem;">
+        Enter the passphrase recovered from the sea to engage the mechanism.
+      </p>
+      <input type="text" id="wasm-input" placeholder="Enter passphrase…" autocomplete="off" spellcheck="false">
+      <button class="btn-primary" id="wasm-submit" style="margin-top:0.5rem;">⚙ Engage Mechanism</button>
+      <div id="wasm-output" style="margin-top:1rem;font-family:var(--font-mono);font-size:0.85rem;"></div>
+    </div>
+
+  </div>
+
+  <script src="../gate.js"></script>
+  <script src="../js/cursor.js"></script>
+  <script src="../js/canvas-puzzle.js"></script>
+  <script src="../js/wasm-loader.js"></script>
+</body>
+
+</html>
