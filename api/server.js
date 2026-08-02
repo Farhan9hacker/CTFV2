@@ -296,6 +296,18 @@ const server = http.createServer((req, res) => {
 });
 
 if (require.main === module) {
+  server.on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+      console.warn(`⚠️ Port ${PORT} is already in use. Trying port ${Number(PORT) + 1}...`);
+      server.listen(Number(PORT) + 1, () => {
+        console.log(`⚓ CTF running at http://localhost:${Number(PORT) + 1}`);
+        console.log(`🏁 Final Vault: http://localhost:${Number(PORT) + 1}/final/index.html`);
+      });
+    } else {
+      console.error('Server error:', err);
+    }
+  });
+
   server.listen(PORT, () => {
     console.log(`⚓ CTF running at http://localhost:${PORT}`);
     console.log(`🏁 Final Vault: http://localhost:${PORT}/final/index.html`);
