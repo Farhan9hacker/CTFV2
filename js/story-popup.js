@@ -117,10 +117,7 @@
     localStorage.setItem('bb_story_shown', 'true');
   }
   window.addEventListener('DOMContentLoaded', function () {
-    const storyShown = localStorage.getItem('bb_story_shown');
-    if (!storyShown) {
-      setTimeout(openStoryModal, 600);
-    }
+    setTimeout(openStoryModal, 600);
     const replayBtn = document.getElementById('replay-story-btn');
     if (replayBtn) {
       replayBtn.addEventListener('click', function (e) {
